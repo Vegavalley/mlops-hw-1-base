@@ -78,7 +78,9 @@ def validate_rows(rows, day):
         for feature, (low, high) in zip(FEATURES, LIMITS):
             value = row[feature]
 
-            if type(value) not in (int, float) or not math.isfinite(value):
+            if type(value) not in (int, float) or (
+                type(value) is float and not math.isfinite(value)
+            ):
                 raise ValueError(f"Invalid {feature} for {customer_id}: {value!r}")
 
             if not low <= value <= high:
@@ -159,7 +161,9 @@ def validate_predictions(predictions, expected_ids):
 
         actual_ids.append(customer_id)
 
-        if type(score) not in (int, float) or not math.isfinite(score):
+        if type(score) not in (int, float) or (
+            type(score) is float and not math.isfinite(score)
+        ):
             raise ValueError(f"Invalid score for {customer_id}")
 
         if not 0 <= score <= 1:
